@@ -29,8 +29,7 @@ Exclude matched assets from being added to the `serviceWorkerOption.assets` vari
 Include matched assets added to the `serviceWorkerOption.assets` variable. (Whitelist)
  - `publicPath`, *string*, default `'/'`:
 Specifies the public URL address of the output files when referenced in a browser.
-- `scriptURL`: the exact url location where the filename will be at
-This callback function receives a raw `serviceWorkerOption` argument.
+ - `outputDir`: If you want your serviceWorker file to be stored in a aditional folder inside webpack's output path.
  - `template`, *function*, default noop:
 This callback function can be used to inject statically generated service worker.
 It's taking a `serviceWorkerOption` argument and must return a promise.

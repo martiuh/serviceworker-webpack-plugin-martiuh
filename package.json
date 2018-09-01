@@ -19,8 +19,8 @@
     "flow": "flow",
     "build": "babel src --out-dir lib",
     "version": "yarn build && pkgfiles",
-    "docs:development": "babel-node ./node_modules/.bin/webpack-dev-server --mode=development --config=docs/webpack/developmentConfig.js --progress",
-    "docs:production": "npm run clean && NODE_ENV=docs-browser-production babel-node ./node_modules/.bin/webpack --mode=production --config=docs/webpack/productionConfig.js --progress"
+    "docs:development": "babel-node ./node_modules/.bin/webpack-dev-server --config=docs/webpack/developmentConfig.js --progress",
+    "docs:production": "npm run clean && NODE_ENV=docs-browser-production babel-node ./node_modules/.bin/webpack --config=docs/webpack/productionConfig.js --progress"
   },
   "repository": {
     "type": "git",

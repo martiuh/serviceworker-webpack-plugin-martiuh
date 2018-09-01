@@ -40,12 +40,13 @@ export default class ServiceWorkerPlugin {
       includes: ['**/*'],
       entry: null,
       filename: 'sw.js',
-      scriptURL: null,
+      outputDir: '',
       template: () => Promise.resolve(''),
       transformOptions: (serviceWorkerOption) => ({
         assets: serviceWorkerOption.assets,
       }),
     }, options);
+    this.filename = `${this.options.outputDir}${this.options.filename}`;
   }
 
   apply(compiler) {
@@ -56,7 +57,7 @@ export default class ServiceWorkerPlugin {
         // Hijack the original module
         if (result.resource === runtimePath) {
           const data = {
-            scriptURL: this.options.scriptURL || this.options.publicPath + this.options.filename,
+            scriptURL: this.options.publicPath + this.options.filename,
           };
 
           result.loaders.push(
@@ -89,7 +90,7 @@ export default class ServiceWorkerPlugin {
 
   handleMake(compilation, compiler) {
     const childCompiler = compilation.createChildCompiler(COMPILER_NAME, {
-      filename: this.options.filename,
+      filename: this.filename,
     });
     childCompiler.context = compiler.context;
     childCompiler.apply(
@@ -122,7 +123,7 @@ export default class ServiceWorkerPlugin {
   }
 
   handleEmit(compilation, compiler, callback) {
-    const asset = compilation.assets[this.options.filename];
+    const asset = compilation.assets[this.filename];
 
     if (!asset) {
       compilation.errors.push(
@@ -143,7 +144,7 @@ export default class ServiceWorkerPlugin {
       timings: false,
     });
 
-    delete compilation.assets[this.options.filename];
+    delete compilation.assets[this.filename];
 
     let assets = Object.keys(compilation.assets);
     const excludes = this.options.excludes;
@@ -188,7 +189,7 @@ export default class ServiceWorkerPlugin {
         ${asset.source()}
       `.trim();
 
-      compilation.assets[this.options.filename] = {
+      compilation.assets[this.filename] = {
         source: () => source,
         size: () => Buffer.byteLength(source, 'utf8'),
       };
